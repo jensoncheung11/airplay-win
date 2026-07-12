@@ -7,6 +7,12 @@ import lombok.RequiredArgsConstructor;
 
 public interface AirPlayConsumer {
 
+    default void onSessionConnecting() {
+    }
+
+    default void onSessionError(Throwable error) {
+    }
+
     void onVideoFormat(VideoStreamInfo videoStreamInfo);
 
     void onVideo(byte[] bytes);
