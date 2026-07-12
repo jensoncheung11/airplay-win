@@ -1,0 +1,6 @@
+.worktrees/
+build-cache/
+dist/
+dev-home/
+.gradle/
+**/build/
