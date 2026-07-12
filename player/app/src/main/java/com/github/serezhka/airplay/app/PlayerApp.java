@@ -17,6 +17,7 @@ public class PlayerApp {
     private final AirPlayServer airPlayServer;
 
     public static void main(String[] args) {
+        MulticastRuntime.applyDefaults();
         new SpringApplicationBuilder(PlayerApp.class)
                 .web(WebApplicationType.NONE)
                 .headless(false)

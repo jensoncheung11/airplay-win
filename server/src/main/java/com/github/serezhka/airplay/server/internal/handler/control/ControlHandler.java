@@ -39,6 +39,7 @@ public class ControlHandler extends ChannelInboundHandlerAdapter {
     private final SessionManager sessionManager;
     private final AirPlayConfig airPlayConfig;
     private final AirPlayConsumer airPlayConsumer;
+    private final AudioVolumeState audioVolumeState = new AudioVolumeState();
 
     @Override
     public final void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -171,6 +172,7 @@ public class ControlHandler extends ChannelInboundHandlerAdapter {
         if (mediaStreamInfo.isPresent()) {
             switch (mediaStreamInfo.get().getStreamType()) {
                 case AUDIO -> {
+                    log.info("Negotiated audio stream: {}", mediaStreamInfo.get());
                     airPlayConsumer.onAudioFormat((AudioStreamInfo) mediaStreamInfo.get());
                     session.getAudioServer().start(airPlayConsumer);
                     session.getAudioControlServer().start();
@@ -196,8 +198,7 @@ public class ControlHandler extends ChannelInboundHandlerAdapter {
     }
 
     private void handleRtspGetParameter(ChannelHandlerContext ctx, FullHttpRequest request) {
-        // TODO get requested param and respond accordingly
-        byte[] content = "volume: 0.000000\r\n".getBytes(StandardCharsets.US_ASCII);
+        byte[] content = audioVolumeState.currentParameterValue().getBytes(StandardCharsets.US_ASCII);
         var response = createRtspResponse(request);
         response.content().writeBytes(content);
         sendResponse(ctx, request, response);
@@ -211,7 +212,10 @@ public class ControlHandler extends ChannelInboundHandlerAdapter {
     }
 
     private void handleRtspSetParameter(ChannelHandlerContext ctx, FullHttpRequest request) {
-        // TODO get requested param and respond accordingly
+        String parameterBody = request.content().toString(StandardCharsets.US_ASCII);
+        audioVolumeState.updateFromRtspParameter(parameterBody);
+        log.info("RTSP set parameter: {}", parameterBody.strip());
+        airPlayConsumer.onAudioVolume(audioVolumeState.linearVolume());
         var response = createRtspResponse(request);
         response.headers().add("Audio-Jack-Status", "connected; type=analog");
         sendResponse(ctx, request, response);

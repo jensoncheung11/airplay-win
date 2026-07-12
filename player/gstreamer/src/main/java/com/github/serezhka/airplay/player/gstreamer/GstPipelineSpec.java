@@ -12,13 +12,13 @@ final class GstPipelineSpec {
 
     static String alac() {
         return "appsrc name=alac-src is-live=true format=time"
-                + " ! avdec_alac ! audioconvert ! audioresample"
-                + " ! volume name=audio-volume ! wasapisink sync=true";
+                + " ! queue ! avdec_alac ! audioconvert ! audioresample"
+                + " ! volume name=audio-volume ! wasapi2sink low-latency=true sync=false";
     }
 
     static String aacEld() {
         return "appsrc name=aac-eld-src is-live=true format=time"
-                + " ! avdec_aac ! audioconvert ! audioresample"
-                + " ! volume name=audio-volume ! wasapisink sync=true";
+                + " ! queue ! avdec_aac ! audioconvert ! audioresample"
+                + " ! volume name=audio-volume ! wasapi2sink low-latency=true sync=false";
     }
 }

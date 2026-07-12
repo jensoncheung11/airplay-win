@@ -30,7 +30,8 @@ public abstract class GstPlayer implements AirPlayConsumer {
     private Pipeline hlsPipeline;
 
     private AudioStreamInfo.CompressionType audioCompressionType;
-
+    private AudioPipelineSelector.Kind activeAudioPipeline;
+    private final AudioClock audioClock = new AudioClock();
     public GstPlayer() {
         h264Pipeline = createH264Pipeline();
 
@@ -82,15 +83,33 @@ public abstract class GstPlayer implements AirPlayConsumer {
     @Override
     public void onAudioFormat(AudioStreamInfo audioStreamInfo) {
         this.audioCompressionType = audioStreamInfo.getCompressionType();
-        alacPipeline.play();
-        aacEldPipeline.play();
+        this.activeAudioPipeline = AudioPipelineSelector.select(audioCompressionType);
+        audioClock.configure(audioStreamInfo);
+        if (activeAudioPipeline == AudioPipelineSelector.Kind.AAC_ELD
+                && audioStreamInfo.getAudioFormat() != AudioStreamInfo.AudioFormat.AAC_ELD_44100_2) {
+            String caps = AudioCapsFactory.aacEld(audioStreamInfo);
+            log.info("Configuring AAC-ELD caps {}", caps);
+            aacEldSrc.setCaps(Caps.fromString(caps));
+        }
+        log.info("Starting audio pipeline {} for {}", activeAudioPipeline, audioStreamInfo);
+        if (activeAudioPipeline == AudioPipelineSelector.Kind.ALAC) {
+            aacEldPipeline.stop();
+            alacPipeline.play();
+        } else {
+            alacPipeline.stop();
+            aacEldPipeline.play();
+        }
     }
 
     @Override
     public void onAudio(byte[] bytes) {
         Buffer buf = new Buffer(bytes.length);
         buf.map(true).put(bytes); // ByteBuffer.wrap(bytes)
-        switch (audioCompressionType) {
+        AudioClock.FrameTiming timing = audioClock.nextFrame();
+        buf.setPresentationTimestamp(timing.presentationTimestampNanos());
+        buf.setDecodeTimestamp(timing.presentationTimestampNanos());
+        buf.setDuration(timing.durationNanos());
+        switch (activeAudioPipeline) {
             case ALAC -> alacSrc.pushBuffer(buf);
             case AAC_ELD -> aacEldSrc.pushBuffer(buf);
         }
@@ -104,6 +123,7 @@ public abstract class GstPlayer implements AirPlayConsumer {
 
     public void setVolume(double volume) {
         double clamped = Math.max(0.0, Math.min(1.0, volume));
+        log.info("Setting receiver volume to {}", clamped);
         alacPipeline.getElementByName("audio-volume").set("volume", clamped);
         aacEldPipeline.getElementByName("audio-volume").set("volume", clamped);
     }
@@ -117,6 +137,7 @@ public abstract class GstPlayer implements AirPlayConsumer {
             hlsPipeline = null;
         }
         audioCompressionType = null;
+        activeAudioPipeline = null;
     }
 
     @Override

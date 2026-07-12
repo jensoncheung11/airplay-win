@@ -72,7 +72,8 @@ public class RTSP {
                     builder.compressionType(AudioStreamInfo.CompressionType.fromCode(compressionType));
                 }
                 if (stream.containsKey("audioFormat")) {
-                    long audioFormatCode = (int) stream.get("audioFormat"); // int or long ?!
+                    Number audioFormatValue = (Number) stream.get("audioFormat");
+                    long audioFormatCode = audioFormatValue.longValue();
                     builder.audioFormat(AudioStreamInfo.AudioFormat.fromCode(audioFormatCode));
                 }
                 if (stream.containsKey("spf")) {

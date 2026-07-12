@@ -25,6 +25,9 @@ public interface AirPlayConsumer {
 
     void onAudioSrcDisconnect();
 
+    default void onAudioVolume(double volume) {
+    }
+
     // HLS stuff, youtube
     default void onMediaPlaylist(String playlistUri) {
     }

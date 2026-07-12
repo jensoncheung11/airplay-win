@@ -71,6 +71,7 @@ class ReceiverControllerTest {
     private static final class FakePlaybackService implements PlaybackService {
         int videoFormatCalls;
         int resetCalls;
+        double lastVolume = -1;
 
         @Override public void onVideoFormat(VideoStreamInfo videoStreamInfo) { videoFormatCalls++; }
         @Override public void onVideo(byte[] bytes) { }
@@ -78,6 +79,7 @@ class ReceiverControllerTest {
         @Override public void onAudioFormat(AudioStreamInfo audioStreamInfo) { }
         @Override public void onAudio(byte[] bytes) { }
         @Override public void onAudioSrcDisconnect() { }
+        @Override public void onAudioVolume(double volume) { lastVolume = volume; }
         @Override public void reset() { resetCalls++; }
     }
 }

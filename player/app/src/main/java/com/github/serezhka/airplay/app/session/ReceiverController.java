@@ -117,6 +117,11 @@ public final class ReceiverController implements AirPlayConsumer, AutoCloseable 
         });
     }
 
+    @Override
+    public void onAudioVolume(double volume) {
+        playback.onAudioVolume(volume);
+    }
+
     private void runSerialized(Runnable action) {
         CompletableFuture.runAsync(action, stateExecutor).join();
     }

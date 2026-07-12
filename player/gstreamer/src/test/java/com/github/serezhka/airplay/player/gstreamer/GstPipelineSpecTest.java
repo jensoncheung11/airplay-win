@@ -25,11 +25,13 @@ class GstPipelineSpecTest {
         assertTrue(alac.contains("avdec_alac"));
         assertTrue(aacEld.contains("appsrc name=aac-eld-src"));
         assertTrue(aacEld.contains("avdec_aac"));
+        assertTrue(alac.contains("queue ! avdec_alac"));
+        assertTrue(aacEld.contains("queue ! avdec_aac"));
         assertTrue(alac.contains("volume name=audio-volume"));
         assertTrue(aacEld.contains("volume name=audio-volume"));
         assertTrue(alac.contains("audioconvert ! audioresample"));
         assertTrue(aacEld.contains("audioconvert ! audioresample"));
-        assertTrue(alac.contains("volume name=audio-volume ! wasapisink sync=true"));
-        assertTrue(aacEld.contains("volume name=audio-volume ! wasapisink sync=true"));
+        assertTrue(alac.contains("volume name=audio-volume ! wasapi2sink"));
+        assertTrue(aacEld.contains("volume name=audio-volume ! wasapi2sink"));
     }
 }
