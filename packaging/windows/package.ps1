@@ -107,11 +107,11 @@ How to use:
 4. To fully exit the receiver, double-click `Stop AirPlay.cmd` or close the console window.
 5. If Windows asks about firewall access on first launch, allow private networks.
 6. Keep the iPhone / iPad and the PC on the same local network.
-7. Open Control Center on the iPhone / iPad, tap Screen Mirroring, and choose `srzhka`.
+7. Open Control Center on the iPhone / iPad, tap Screen Mirroring, and choose `AirPlay`.
 
 Common issues:
 
-- Cannot find srzhka
+- Cannot find AirPlay
   Make sure the app is already running, both devices are on the same LAN, and VPN is off.
 
 - Want to close the app completely

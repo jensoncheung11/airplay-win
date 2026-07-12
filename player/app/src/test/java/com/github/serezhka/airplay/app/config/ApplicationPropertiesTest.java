@@ -11,12 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ApplicationPropertiesTest {
 
     @Test
-    void defaultsToSwingWindowForGstreamerPlayback() throws IOException {
+    void defaultsToPortableAirPlayNameAndSwingWindowForGstreamerPlayback() throws IOException {
         Properties properties = new Properties();
         try (InputStream input = getClass().getResourceAsStream("/application.properties")) {
             properties.load(input);
         }
 
+        assertEquals("AirPlay", properties.getProperty("airplay.serverName"));
         assertEquals("true", properties.getProperty("player.gstreamer.swing"));
     }
 }

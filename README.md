@@ -38,7 +38,7 @@ Main asset:
 5. Make sure the iPhone / iPad and the PC are on the same local network
 6. Open Control Center on iPhone / iPad
 7. Tap Screen Mirroring
-8. Select `srzhka`
+8. Select `AirPlay`
 
 To fully stop the receiver, double-click `Stop AirPlay.cmd` or close the console window.
 
@@ -63,7 +63,7 @@ logs\receiver.log
 
 ## Common issues
 
-### Cannot find `srzhka`
+### Cannot find `AirPlay`
 
 Check the following:
 
@@ -122,7 +122,7 @@ dist\ios-airplay-win-x64.zip
 
 - Default player backend: GStreamer
 - Default display mode: Swing window
-- Default device name: `srzhka`
+- Default device name: `AirPlay`
 - Default target resolution: 1920x1080
 - Default target frame rate: 60fps
 

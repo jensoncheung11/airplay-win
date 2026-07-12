@@ -38,7 +38,7 @@
 5. 确保电脑和 iPhone / iPad 在同一局域网内
 6. 在 iPhone / iPad 打开控制中心
 7. 点击“屏幕镜像”
-8. 选择 `srzhka`
+8. 选择 `AirPlay`
 
 如需完全退出接收器，可双击 `Stop AirPlay.cmd`，或者直接关闭启动后的控制台窗口。
 
@@ -63,7 +63,7 @@ logs\receiver.log
 
 ## 常见问题
 
-### 1. 手机里找不到 `srzhka`
+### 1. 手机里找不到 `AirPlay`
 
 请检查：
 
@@ -122,7 +122,7 @@ dist\ios-airplay-win-x64.zip
 
 - 默认播放器后端：GStreamer
 - 默认显示方式：Swing 窗口
-- 默认设备名：`srzhka`
+- 默认设备名：`AirPlay`
 - 默认目标分辨率：1920x1080
 - 默认目标帧率：60fps
 
