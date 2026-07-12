@@ -115,7 +115,7 @@ class ReverseEngineeringTest {
     @Test
     void testNormalizeMediaSlicesUri() throws Exception {
         var mediaInfo = Paths.get(ReverseEngineeringTest.class.getResource("/reverse_engineering/mediainfo.m3u8").toURI());
-        var playlist = Files.readString(mediaInfo);
+        var playlist = Files.readString(mediaInfo).replace("\r\n", "\n");
         var parser = new MediaPlaylistParser(ParsingMode.LENIENT);
         var mediaPlaylist = parser.readPlaylist(playlist);
 
