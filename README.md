@@ -1,131 +1,133 @@
-﻿# airplay-win
+# airplay-win
 
-适用于 Windows 10 / 11 x64 的便携版 AirPlay 接收器。
+[简体中文说明](./README.zh-CN.md)
 
-本项目基于 [serezhka/java-airplay](https://github.com/serezhka/java-airplay) 进行整理和适配，目标是提供一个适合个人直接使用的 Windows 无线投屏接收方案：解压即可运行，可接收 iPhone / iPad 的 AirPlay 投屏，并在电脑上播放画面和声音。
+Portable AirPlay receiver for Windows 10/11 x64.
 
-## 功能特点
+This project is a Windows-focused fork based on [serezhka/java-airplay](https://github.com/serezhka/java-airplay), packaged for personal use with a bundled Java runtime, bundled GStreamer runtime, and ready-to-run start/stop scripts.
 
-- 支持 iPhone / iPad 无线投屏到 Windows
-- 支持电脑端播放投屏声音
-- 免安装，解压即用
-- 内置 Java 运行环境
-- 内置 GStreamer 运行环境
-- 提供启动、调试、关闭脚本
-- 适配 Windows 10 / 11 x64
+## Features
 
-## 下载
+- Wireless AirPlay receiver for Windows 10/11 x64
+- iPhone / iPad screen mirroring
+- Audio playback on the PC
+- Portable package, unzip and run
+- Bundled Java runtime
+- Bundled GStreamer runtime
+- Start, debug, and stop scripts included
 
-请前往发行版页面下载最新打包文件：
+## Download
+
+Download the latest prebuilt package from:
 
 - GitHub Releases: [https://github.com/jensoncheung11/airplay-win/releases/latest](https://github.com/jensoncheung11/airplay-win/releases/latest)
-- Gitee 发行版: [https://gitee.com/jensoncheung1/airplay-win/releases](https://gitee.com/jensoncheung1/airplay-win/releases)
+- Gitee Releases: [https://gitee.com/jensoncheung1/airplay-win/releases](https://gitee.com/jensoncheung1/airplay-win/releases)
 
-主要附件：
+Main asset:
 
 - `ios-airplay-win-x64.zip`
 
-## 快速使用
+## Quick start
 
-1. 下载 `ios-airplay-win-x64.zip`
-2. 将压缩包完整解压到一个普通文件夹
-3. 双击运行 `Start AirPlay.cmd`
-4. 首次运行如果弹出 Windows 防火墙提示，请允许专用网络访问
-5. 确保电脑和 iPhone / iPad 在同一局域网内
-6. 在 iPhone / iPad 打开控制中心
-7. 点击“屏幕镜像”
-8. 选择 `srzhka`
+1. Download `ios-airplay-win-x64.zip`
+2. Extract the whole zip to a normal folder
+3. Double-click `Start AirPlay.cmd`
+4. If Windows Firewall prompts on first launch, allow private network access
+5. Make sure the iPhone / iPad and the PC are on the same local network
+6. Open Control Center on iPhone / iPad
+7. Tap Screen Mirroring
+8. Select `srzhka`
 
-如需完全退出接收器，可双击 `Stop AirPlay.cmd`，或者直接关闭启动后的控制台窗口。
+To fully stop the receiver, double-click `Stop AirPlay.cmd` or close the console window.
 
-## 附带脚本说明
+## Included scripts
 
 - `Start AirPlay.cmd`
-  - 正常启动投屏接收器
+  - Normal startup
 
 - `Start AirPlay Debug.cmd`
-  - 用于调试启动问题，方便查看输出信息
+  - Startup for troubleshooting and visible output
 
 - `Stop AirPlay.cmd`
-  - 用于彻底关闭当前运行中的接收器进程
+  - Fully stops the packaged receiver process
 
-## 日志
+## Logs
 
-运行日志默认写入：
+Runtime logs are written to:
 
 ```text
 logs\receiver.log
 ```
 
-## 常见问题
+## Common issues
 
-### 1. 手机里找不到 `srzhka`
+### Cannot find `srzhka`
 
-请检查：
+Check the following:
 
-- 程序是否已经启动
-- 手机和电脑是否处于同一局域网
-- 是否开启了 VPN、代理或网络隔离
-- Windows 防火墙是否已允许程序通过专用网络
+- The app is already running
+- The phone and PC are on the same LAN
+- VPN, proxy, or network isolation is turned off
+- Windows Firewall has allowed private network access
 
-### 2. 有画面但没有声音
+### Picture but no sound
 
-请尝试：
+Try:
 
-- 断开投屏后重新连接一次
-- 检查当前 Windows 默认播放设备是否正常输出声音
+- Disconnecting and reconnecting once
+- Confirming the current default Windows playback device works normally
 
-### 3. 有声音但没有画面
+### Sound but no picture
 
-请尝试：
+Try:
 
-- 重新连接一次
-- 部分受版权保护的视频内容可能无法正常显示
+- Reconnecting once
+- Note that some DRM-protected content may not render correctly
 
-### 4. 断开投屏后程序没有自动退出
+### The app does not exit after disconnecting mirroring
 
-这是当前设计行为。  
-断开投屏只会回到等待连接状态，不会自动关闭程序。  
-如果需要完全退出，请运行 `Stop AirPlay.cmd`。
+This is expected behavior.
+Disconnecting mirroring only returns the receiver to standby mode.
+Use `Stop AirPlay.cmd` if you want to close it completely.
 
-### 5. 投屏卡顿或不流畅
+### Mirroring is laggy or unstable
 
-建议：
+Recommendations:
 
-- 优先使用 5GHz Wi‑Fi
-- 尽量让手机靠近路由器
-- 保持局域网环境稳定
-- 避免同时进行高占用网络传输
+- Prefer 5 GHz Wi-Fi
+- Keep the phone close to the router
+- Keep the LAN stable
+- Avoid heavy concurrent network transfers
 
-## 从源码构建
+## Build from source
 
-项目内已包含 Windows 打包脚本，可用于构建并生成便携版压缩包。
+This repository includes a Windows packaging script that builds the app and creates a portable zip package.
 
-在项目根目录执行：
+From the project root:
 
 ```powershell
 .\packaging\windows\package.ps1
 ```
 
-生成结果：
+Output:
 
 ```text
 dist\ios-airplay-win-x64\
 dist\ios-airplay-win-x64.zip
 ```
 
-## 技术说明
+## Technical notes
 
-- 默认播放器后端：GStreamer
-- 默认显示方式：Swing 窗口
-- 默认设备名：`srzhka`
-- 默认目标分辨率：1920x1080
-- 默认目标帧率：60fps
+- Default player backend: GStreamer
+- Default display mode: Swing window
+- Default device name: `srzhka`
+- Default target resolution: 1920x1080
+- Default target frame rate: 60fps
 
-## 上游项目
+## Upstream
 
-本项目基于以下开源项目：
+This project is based on:
 
 - [serezhka/java-airplay](https://github.com/serezhka/java-airplay)
 
-感谢上游项目提供 AirPlay 接收实现基础。
+Thanks to the upstream project for the original AirPlay implementation.
