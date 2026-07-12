@@ -1,6 +1,13 @@
+.idea
+.gradle
+build
+out
+local.properties
+dump.h264
+/log
+/log.*
 .worktrees/
 build-cache/
 dist/
 dev-home/
-.gradle/
 **/build/
