@@ -1,79 +1,121 @@
-# Java AirPlay Server
+# airplay-win
 
-[![GitHub release](https://img.shields.io/github/v/release/serezhka/java-airplay)](https://github.com/serezhka/java-airplay/releases)
-[![build](https://github.com/serezhka/java-airplay/actions/workflows/build.yaml/badge.svg)](https://github.com/serezhka/java-airplay/actions/workflows/build.yaml)
-![ViewCount](https://views.whatilearened.today/views/github/serezhka/java-airplay.svg)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+Portable AirPlay receiver for Windows 10/11 x64.
 
-This project unites the [java-airplay-lib](https://github.com/serezhka/java-airplay-lib), [java-airplay-server](https://github.com/serezhka/java-airplay-server)
-and [java-airplay-server-examples](https://github.com/serezhka/java-airplay-server-examples) into one.
-It makes development a lot easier when all parts of the code are put together.
+This project is a Windows-focused fork based on [serezhka/java-airplay](https://github.com/serezhka/java-airplay), packaged for personal use with a bundled Java runtime, bundled GStreamer runtime, and ready-to-run start/stop scripts.
 
-😩 Due to lack of free time and other priorities, this project is not actively maintained. 😩
+## Features
 
-## Demo
+- Wireless AirPlay receiver for Windows 10/11 x64
+- iPhone / iPad screen mirroring
+- Audio playback on the PC
+- Portable package, unzip and run
+- Visible console startup for easier troubleshooting
+- Start and stop scripts included
 
-* Raspberry pi 4 model B (1280 x 720 @ 24 fps)
+## Download
 
-[![RASPBERRY](https://img.youtube.com/vi/uRvgVkLWfSI/hqdefault.jpg)](https://youtu.be/uRvgVkLWfSI)
+Download the latest prebuilt package from:
 
-* Windows laptop (1920 x 1080 @ 30 fps)
+[Latest Release](https://github.com/jensoncheung11/airplay-win/releases/latest)
 
-[![RASPBERRY](https://img.youtube.com/vi/RT1hVWGJzos/hqdefault.jpg)](https://youtu.be/RT1hVWGJzos)
+Main asset:
 
-## How to Run
+- `ios-airplay-win-x64.zip`
 
-### From sources
+## Quick start
 
-```shell
-git clone https://github.com/serezhka/java-airplay
-cd ./java-airplay
-./gradlew bootRun
+1. Download `ios-airplay-win-x64.zip` from the latest release.
+2. Extract the whole zip to a normal folder.
+3. Double-click `Start AirPlay.cmd`.
+4. If Windows asks about firewall access on first launch, allow private networks.
+5. Make sure the iPhone / iPad and the PC are on the same local network.
+6. On iPhone / iPad, open Control Center -> Screen Mirroring.
+7. Select `srzhka`.
+
+To fully stop the receiver, double-click `Stop AirPlay.cmd` or close the console window.
+
+## Included scripts
+
+- `Start AirPlay.cmd`  
+  Starts the receiver in a visible console window.
+
+- `Start AirPlay Debug.cmd`  
+  Starts the receiver in a visible console window for debugging.
+
+- `Stop AirPlay.cmd`  
+  Stops the packaged receiver process.
+
+## Notes
+
+- The current default AirPlay device name is `srzhka`.
+- Disconnecting screen mirroring does not fully exit the receiver process. Use `Stop AirPlay.cmd` if you want to close it completely.
+- Some DRM-protected video content may stay black.
+- For better stability, prefer 5 GHz Wi-Fi and keep the phone close to the router.
+
+## Logs
+
+The packaged build writes logs to:
+
+`logs\receiver.log`
+
+## Common issues
+
+### Cannot find `srzhka`
+
+- Make sure the app is already running.
+- Make sure both devices are on the same LAN.
+- Turn off VPN or network isolation features.
+- If Windows Firewall prompts on first launch, allow private network access.
+
+### Picture but no sound
+
+- Disconnect and reconnect once.
+- Confirm the current default Windows playback device can output sound.
+
+### Sound but no picture
+
+- Reconnect once.
+- Some protected content may not render.
+
+### App does not close after disconnecting
+
+- This is expected behavior for standby mode.
+- Run `Stop AirPlay.cmd` to stop it fully.
+
+## Build from source
+
+This repository includes a Windows packaging script that builds the app, runs tests, and creates a portable zip package.
+
+From the project root:
+
+```powershell
+.\packaging\windows\package.ps1
 ```
 
-### Pre-built app
+Output:
 
-Download the latest release
+- `dist\ios-airplay-win-x64\`
+- `dist\ios-airplay-win-x64.zip`
 
-```shell
-java -jar java-airplay-server-{version}.jar
-```
+The packaging script expects:
 
-## Configuration
+- a local JDK 17 runtime
+- a local GStreamer runtime
 
-Create `application.properties` file in working dir
+The current default package target is Windows x64.
 
-### Available properties
+## Tech notes
 
-```properties
-# airplay
-airplay.serverName=srzhka
-airplay.width=1280
-airplay.height=720
-airplay.fps=24
-# player (gstreamer, ffmpeg, vlc, h264-dump)
-player.implementation=gstreamer
-player.menu.enabled=true
-player.gstreamer.swing=true
-```
+- Player backend: GStreamer
+- Default player mode: Swing window
+- Default target resolution: 1920x1080
+- Default target fps: 60
 
-## Players
+## Upstream
 
-### Gstreamer
+This project is based on:
 
-Supports both video and audio (alac + aac_eld) streams <br>
-Gstreamer installation is required (see https://github.com/gstreamer-java/gst1-java-core)
+- [serezhka/java-airplay](https://github.com/serezhka/java-airplay)
 
-### FFmpeg
-
-Supports only video stream because playback of aac_eld audio requires ffmpeg compilation with ```--enable-libfdk-aac```  <br>
-FFmpeg installation is required, ffplay must be on PATH
-
-### VLC
-
-Playback stops after few seconds <br>
-VLC installation is required
-
-### h264-dump
-
-Saves video stream into dump.h264 file
+Thanks to the upstream project for the original AirPlay implementation.
