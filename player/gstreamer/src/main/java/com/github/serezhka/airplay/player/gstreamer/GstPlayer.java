@@ -41,7 +41,7 @@ public abstract class GstPlayer implements AirPlayConsumer {
         h264Src.set("format", Format.TIME);
         h264Src.set("emit-signals", true);
 
-        alacPipeline = (Pipeline) Gst.parseLaunch("appsrc name=alac-src ! avdec_alac ! audioconvert ! audioresample ! autoaudiosink sync=false");
+        alacPipeline = (Pipeline) Gst.parseLaunch(GstPipelineSpec.alac());
 
         alacSrc = (AppSrc) alacPipeline.getElementByName("alac-src");
         alacSrc.setStreamType(AppSrc.StreamType.STREAM);
@@ -50,11 +50,11 @@ public abstract class GstPlayer implements AirPlayConsumer {
         alacSrc.set("format", Format.TIME);
         alacSrc.set("emit-signals", true);
 
-        aacEldPipeline = (Pipeline) Gst.parseLaunch("appsrc name=aac-eld-src ! avdec_aac ! audioconvert ! audioresample ! autoaudiosink sync=false");
+        aacEldPipeline = (Pipeline) Gst.parseLaunch(GstPipelineSpec.aacEld());
 
         aacEldSrc = (AppSrc) aacEldPipeline.getElementByName("aac-eld-src");
         aacEldSrc.setStreamType(AppSrc.StreamType.STREAM);
-        aacEldSrc.setCaps(Caps.fromString("audio/mpeg,mpegversion=(int)4,channnels=(int)2,rate=(int)44100,stream-format=raw,codec_data=(buffer)f8e85000"));
+        aacEldSrc.setCaps(Caps.fromString("audio/mpeg,mpegversion=(int)4,channels=(int)2,rate=(int)44100,stream-format=raw,codec_data=(buffer)f8e85000"));
         aacEldSrc.set("is-live", true);
         aacEldSrc.set("format", Format.TIME);
         aacEldSrc.set("emit-signals", true);
@@ -100,6 +100,23 @@ public abstract class GstPlayer implements AirPlayConsumer {
     public void onAudioSrcDisconnect() {
         alacPipeline.stop();
         aacEldPipeline.stop();
+    }
+
+    public void setVolume(double volume) {
+        double clamped = Math.max(0.0, Math.min(1.0, volume));
+        alacPipeline.getElementByName("audio-volume").set("volume", clamped);
+        aacEldPipeline.getElementByName("audio-volume").set("volume", clamped);
+    }
+
+    public void reset() {
+        h264Pipeline.stop();
+        alacPipeline.stop();
+        aacEldPipeline.stop();
+        if (hlsPipeline != null) {
+            hlsPipeline.stop();
+            hlsPipeline = null;
+        }
+        audioCompressionType = null;
     }
 
     @Override

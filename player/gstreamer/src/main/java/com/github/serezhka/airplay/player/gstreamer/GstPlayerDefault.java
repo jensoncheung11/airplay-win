@@ -7,6 +7,6 @@ public class GstPlayerDefault extends GstPlayer {
 
     @Override
     protected Pipeline createH264Pipeline() {
-        return (Pipeline) Gst.parseLaunch("appsrc name=h264-src ! h264parse ! avdec_h264 ! autovideosink sync=false");
+        return (Pipeline) Gst.parseLaunch(GstPipelineSpec.video("autovideosink sync=true"));
     }
 }

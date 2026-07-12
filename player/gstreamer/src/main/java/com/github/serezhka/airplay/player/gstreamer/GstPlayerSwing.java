@@ -31,7 +31,7 @@ public class GstPlayerSwing extends GstPlayer {
 
     @Override
     protected Pipeline createH264Pipeline() {
-        return (Pipeline) Gst.parseLaunch("appsrc name=h264-src ! h264parse ! avdec_h264 ! videoconvert ! appsink name=sink sync=false");
+        return (Pipeline) Gst.parseLaunch(GstPipelineSpec.video("appsink name=sink sync=true"));
     }
 
     @Override

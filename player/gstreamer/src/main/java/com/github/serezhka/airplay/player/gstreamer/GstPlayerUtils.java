@@ -15,6 +15,7 @@ import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Kernel32;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
@@ -34,6 +35,13 @@ class GstPlayerUtils {
      */
     static void configurePaths() {
         if (Platform.isWindows()) {
+            String appHome = System.getProperty("airplay.home");
+            if (appHome != null && !appHome.isBlank()) {
+                Path home = Path.of(appHome).toAbsolutePath().normalize();
+                Path runtime = GstRuntime.resolve(home);
+                GstRuntime.configureEnvironment(home, runtime);
+                return;
+            }
             String gstPath = System.getProperty("gstreamer.path", findWindowsLocation());
             if (!gstPath.isEmpty()) {
                 String systemPath = System.getenv("PATH");
