@@ -1,5 +1,7 @@
 # airplay-win
 
+[![License](https://img.shields.io/github/license/jensoncheung11/airplay-win)](./LICENSE)
+
 [简体中文说明](./README.zh-CN.md)
 
 Portable AirPlay receiver for Windows 10/11 x64.

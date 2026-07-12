@@ -1,5 +1,7 @@
 # airplay-win
 
+[![License](https://img.shields.io/github/license/jensoncheung11/airplay-win)](./LICENSE)
+
 [English README](./README.md)
 
 适用于 Windows 10 / 11 x64 的便携版 AirPlay 接收器。
